@@ -1,11 +1,12 @@
 pipeline {
     agent {
-        docker { image 'node:14-alpine' }
+        any
     }
     stages {
-        stage('Test') {
+        stage('build') {
+            agent {"gradle"}
             steps {
-                sh 'node --version'
+                sh 'chmod +x gradlew && ./gradlew build'
             }
         }
     }
