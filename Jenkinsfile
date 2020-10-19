@@ -9,16 +9,14 @@ pipeline {
                 sh 'chmod +x gradlew && ./gradlew build'
             }
         }
-    stage('sonarqube') {
+        stage('sonarqube') {
         agent {
-            docker { image 'sonarsource/sonar-scanner-cli' }
+            docker { image 'sonarsource/sonar-scanner-cli' } }
             steps {
                 withSonarQubeEnv("sonarcloud") {
                 sh """export SONARQUBE_SCANNER_PARAMS={} && sonar-scanner -Dsonar.projectKey=sample-spring-boot -Dsonar.sources=. -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.java.binaries=build/classes/java/main"""
-            }
+                }
             }
         }
-
-    }
     }
 }
