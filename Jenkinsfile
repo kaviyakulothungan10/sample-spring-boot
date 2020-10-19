@@ -4,7 +4,7 @@ pipeline {
     }
     stages {
         stage('build') {
-            agent {"gradle"}
+            agent {docker { image 'gradle' }}
             steps {
                 sh 'chmod +x gradlew && ./gradlew build'
             }
