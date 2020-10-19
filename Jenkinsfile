@@ -9,7 +9,7 @@ pipeline {
                 sh 'chmod +x gradlew && ./gradlew build'
             }
         }
-    stages {
+    stage('sonarqube') {
         agent {
             docker { image 'sonarsource/sonar-scanner-cli' }
             steps {
