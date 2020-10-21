@@ -18,7 +18,7 @@ pipeline {
             docker { image 'sonarsource/sonar-scanner-cli' } }
             steps {
                 withSonarQubeEnv("sonarcloud") {
-                sh """export SONARQUBE_SCANNER_PARAMS={} && sonar-scanner -Dsonar.projectKey=sample-spring-boot -Dsonar.sources=. -Dsonar.organization=mydevopstestlab -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.java.binaries=build/classes/java/main"""
+                sh """export SONARQUBE_SCANNER_PARAMS={} && sonar-scanner -Dsonar.projectKey=sample-spring-boot -Dsonar.sources=. -Dsonar.login=${SONAR_AUTH_TOKEN} -Dsonar.organization=mydevopstestlab -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.java.binaries=build/classes/java/main"""
                 }
             }
         }
