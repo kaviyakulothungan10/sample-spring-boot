@@ -16,6 +16,12 @@ pipeline {
         stage('sonarqube') {
         agent any
             steps {
+                sh """export SONARQUBE_SCANNER_PARAMS={} && sonar-scanner -Dsonar.projectKey=sample-spring-boot -Dsonar.sources=. -Dsonar.organization=mydevopstestlab -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.java.binaries=build/classes/java/main"""
+            }
+        }
+        stage('docker build') {
+        agent any
+            steps {
                 script {
                     app = docker.build("${DOCKERIMAGE}:${env.BUILD_NUMBER}")      
                 }
