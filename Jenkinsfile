@@ -42,9 +42,18 @@ pipeline {
                         app.push("${env.BUILD_NUMBER}")
                         app.push("latest")
                     }
-
-            }
+                }
             }
         }
-}
+        stage('Deploy App') {
+            agent {
+                docker { image 'bitnami/kubectl' }
+            }
+            steps {
+                script {
+                kubernetesDeploy(configs: "kubernetes.yml", kubeconfigId: "kubeconfig")
+                }
+            }
+            }
+    }
 }
