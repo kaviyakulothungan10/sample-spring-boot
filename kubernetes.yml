@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,9 +27,9 @@ metadata:
     name: sample-spring-boot
 spec:
   ports:
-    - port: 8080 # The service will publish the application on the default http port(80)
+    - port: 8081 # The service will publish the application on the default http port(80)
       targetPort: 8080
       protocol: TCP
   selector:
     app: sample-spring-boot
-  type: NodePort # Type loadbalancer will use the underlying cloud provider to create an external url for accessing the app
+  type: LoadBalancer # Type loadbalancer will use the underlying cloud provider to create an external url for accessing the app
