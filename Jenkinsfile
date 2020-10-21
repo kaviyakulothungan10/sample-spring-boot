@@ -47,11 +47,16 @@ pipeline {
         }
         stage('Deploy App') {
             agent {
-                docker { image 'bitnami/kubectl' }
+              docker {
+                image 'bitnami/kubectl'
+                args '--entrypoint='
+              }
             }
             steps {
                 script {
-                kubernetesDeploy(configs: "kubernetes.yml", kubeconfigId: "kubeconfig")
+                    withCredentials([kubeconfigFile(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                        sh """kubectl apply --kubeconfig=${KUBECONFIG} -f kubernetes.yml"""
+                    }
                 }
             }
             }
