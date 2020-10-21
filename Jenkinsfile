@@ -30,7 +30,7 @@ pipeline {
                 }
             }
         }
-        stage('docker build') {
+        stage('docker push') {
         agent any
             steps {
                 script {
