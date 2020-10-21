@@ -1,5 +1,9 @@
 pipeline {
     agent none
+        environment {
+        ENV_DOCKER = credentials('dockerhub')
+        DOCKERIMAGE = "ravindranathbarathy/sample-spring-boot"
+    }
     stages {
         stage('build') {
             agent {
@@ -10,13 +14,20 @@ pipeline {
             }
         }
         stage('sonarqube') {
-        agent {
-            docker { image 'sonarsource/sonar-scanner-cli' } }
+        agent any
             steps {
-                withSonarQubeEnv("sonarcloud") {
-                sh """export SONARQUBE_SCANNER_PARAMS={} && sonar-scanner -Dsonar.projectKey=sample-spring-boot -Dsonar.sources=. -Dsonar.organization=mydevopstestlab -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.java.binaries=build/classes/java/main"""
+                script {
+                    app = docker.build("${DOCKERIMAGE}:${env.BUILD_NUMBER}")      
                 }
             }
         }
-    }
+        stage('docker build') {
+        agent any
+            steps {
+                script {
+                    app = docker.build("${DOCKERIMAGE}:${env.BUILD_NUMBER}")      
+                }
+            }
+            }
+        }
 }
